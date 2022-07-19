@@ -3,27 +3,16 @@
  * ---------------
  */
 :root {
-  --orange-050: #ffe8d9;
-  --orange-100: #ffd0b5;
-  --orange-200: #ffb088;
-  --orange-300: #ff9466;
-  --orange-400: #f9703e;
-  --orange-500: #f35627;
-  --orange-600: #de3a11;
-  --orange-700: #c52707;
-  --orange-800: #ad1d07;
-  --orange-900: #841003;
+  --green-800: #166534;
+  --green-900: #14532d;
 
-  --grey-050: #f5f7fa;
-  --grey-100: #e4e7eb;
-  --grey-200: #cbd2d9;
-  --grey-300: #9aa5b1;
-  --grey-400: #7b8794;
-  --grey-500: #616e7c;
-  --grey-600: #52606d;
-  --grey-700: #3e4c59;
-  --grey-800: #323f4b;
-  --grey-900: #1f2933;
+  --emerald-800: #065f46;
+  --emerald-900: #064e3b;
+
+  --cyan-800: #155e75;
+  --cyan-900: #164e63;
+
+  --slate-200: #e2e8f0;
 }
 
 /*******************
@@ -38,8 +27,74 @@ html {
 
 body {
   display: flex;
-  background-image: linear-gradient(236deg, #74ebd5, #acb6e5);
+  background-image: linear-gradient(236deg, var(--cyan-800), var(--green-800));
   justify-content: center;
   align-items: center;
   height: 100vh;
+}
+
+img{
+  aspect-ratio: 1/1;
+  object-fit: contain;
+}
+
+/*******************
+ Game board Styles
+ *******************/
+.wrapper{
+  width: min(50rem,100%);
+  display: grid;
+  gap: 2rem;
+  grid-template-rows: 1fr 5fr 1fr;
+  grid-template-areas:
+                      "action"
+                      "board"
+                      "score";
+}
+
+.action{
+  padding: 1rem;;
+  grid-area: action;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  justify-items: center;
+}
+
+.marker{
+  display: flex;
+  gap: .4em;
+}
+
+.marker > img{
+  width: min(2.5rem, 100%);
+  cursor: pointer;
+}
+
+.current-player{
+  width: min(10rem, 100%);
+  display: flex;
+  gap: .5rem;
+  justify-content: center;
+  align-items: center;
+  color: var(--slate-200);
+  font-size: 1.6rem;
+  font-weight: 700;
+  padding: .5rem 2rem;
+  border-radius: 4px;
+  box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.8);
+  background-color: var(--green-900);
+}
+
+.replay-btn > img{
+  cursor: pointer;
+  margin-left: auto;
+  width: min(4rem, 100%);
+}
+
+.game-board{
+  grid-area: board;
+}
+
+.score-board{
+  grid-area: score;
 }
