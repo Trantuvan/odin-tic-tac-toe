@@ -6,6 +6,9 @@
   --green-800: #166534;
   --green-900: #14532d;
 
+  --emerald-300: #6ee7b7;
+  --emerald-500: #22c55e;
+  --emerald-700: #047857;
   --emerald-800: #065f46;
   --emerald-900: #064e3b;
 
@@ -44,8 +47,8 @@ img{
 .wrapper{
   width: min(50rem,100%);
   display: grid;
-  gap: 2rem;
-  grid-template-rows: 1fr 5fr 1fr;
+  gap: 1rem;
+  grid-template-rows: 1fr 8fr 1fr;
   grid-template-areas:
                       "action"
                       "board"
@@ -53,7 +56,7 @@ img{
 }
 
 .action{
-  padding: 1rem;;
+  padding: .8rem 1.5rem;
   grid-area: action;
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -81,7 +84,7 @@ img{
   font-weight: 700;
   padding: .5rem 2rem;
   border-radius: 4px;
-  box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.8);
+  box-shadow: 1px 4px 7px 0px rgb(0 0 0 / 60%);
   background-color: var(--green-900);
 }
 
@@ -92,7 +95,19 @@ img{
 }
 
 .game-board{
+  padding: .8rem 1.5rem;
   grid-area: board;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: repeat(3, 1fr);
+  gap: 2em;
+}
+
+.game-board > .cell{
+  cursor: pointer;
+  background-color: var(--slate-200);
+  border-radius: 8px;
+  box-shadow: 1px 6px 4px 0px rgb(0 0 0 / 80%);
 }
 
 .score-board{
