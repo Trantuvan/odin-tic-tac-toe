@@ -1,74 +1,48 @@
-// Utility functions (sending events through modules)
-const events = (() => {
-  const events = {};
 
-  function on(eventName, callback) {
-    events[eventName] = events[eventName] || [];
-    events[eventName].push(callback);
-  }
+// player factory: Properties => name, marker
+// to define inside Player factory: getname, getMarker, setNamen, setMarker (return these 4)
+const player = (name, marker) =>{
+  const getName = () => playerName;
+  const getMarker = () => playerMarker;
+  const setName = (value) => value = name;
+  const setMarker = (value) => value = marker;
 
-  function off(eventName, callback) {
-    if (events[eventName]) {
-      for (let i = 0; i < events[eventName].length; i++) {
-        if (events[eventName][i] === callback) {
-          events[eventName].splice(i, 1);
-          break;
-        }
-      }
-    }
-  }
-
-  function emit(eventName, data) {
-    if (events[eventName]) {
-      events[eventName].forEach((callback) => callback(data));
-    }
-  }
-
-  return { on, off, emit };
-})();
-
-const player = function (marker) {
-  const moves = [];
-  const playerMaker = marker;
-
-  function updateMove() {}
-
-  function render() {}
-
-  return { moves, playerMaker, updateMove, render };
-};
+  return {getName, getMarker, setName, setMarker};
+}
 
 
-const gameBoard = (function () {
-  const cells = [];
-  let player1;
-  let player2;
+// another factory => store data inside of it
+// create the board. 9 fields of the board, what value?
+// create a function to find an element at a specific index of the board
+// create function to set a value to a specific index of the board
+// create a function that will get you a state of the board at any given time (you want to return a copy of the board because of data privacy.
+// This way, your original board stays inside of your factory and in that way it's protected. You only ever work with the copy)
+// so inside of this one you return : getValueOfTheBoardAtIndex, setValueOfTheBoardAtIndex, getBoard (you probably want to name this better :D)
+const board = () =>{
+  const board = [
+    undefined, undefined, undefined,
+    undefined, undefined, undefined,
+    undefined, undefined, undefined
+  ];
 
-  //* Cache Dom
+  const getBoardValue = (index) => board[index];
+  const setBoardValue = (index, value) => board[index] = value;
+  const getBoard = () => [...board];
+
+  return { getBoard, getBoardValue, setBoardValue };
+}
+
+// and finally, an IIFE. This is where you define your game logic. Here you define players, define a function that will define which player is
+// the current player, the clear function, checkWinner function, and you attach event listeners to divs. Once you defined all of the above, this part should
+// not be too complicated. In this event listener, what you want is to actually tie your state of the board with the DOM. Dom should be used only to display
+// our data, it should not be our primary source of data. There you go. I go back you can ask questions in discord
+
+(() => {
+  const gameBoard = board();
+  const player1 = player("test1", "X");
+  const player2 = player("test2", "O");
+
+  //* cache dom
   const wrapper = document.querySelector(".wrapper");
-  const markers = wrapper.querySelectorAll(".marker");
-
-  //* Initialize
-  Array.from(markers).forEach((marker) => {
-    marker.addEventListener("click", (evt) => {
-      const playerMarker = setCurrentMarker(evt);
-      events.emit("markerChanged", playerMarker);
-    });
-  });
-
-  //* Bind Events
-  events.on("markerChanged", createPlayers);
-
-  function setCurrentMarker(evt) {
-    return evt.target.getAttribute("data-marker");
-  }
-
-  function createPlayers(marker) {
-    const player2Marker = marker === "X" ? "O" : "X";
-    player1 = player(marker);
-    player2 = player(player2Marker);
-
-    events.off("markerChanged", createPlayers);
-  }
-})();
-
+  const cells = wrapper.querySelectorAll("#game-board cell");
+})()
