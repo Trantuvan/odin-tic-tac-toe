@@ -116,7 +116,7 @@ img{
 }
 
 .cell > img{
-  width: min(12rem, 100%);
+  width: min(10rem, 100%);
 }
 
 .score-board{

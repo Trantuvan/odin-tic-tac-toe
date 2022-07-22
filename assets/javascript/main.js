@@ -45,4 +45,7 @@ const board = () =>{
   //* cache dom
   const wrapper = document.querySelector(".wrapper");
   const cells = wrapper.querySelectorAll("#game-board cell");
+
+  Array.from(cells).forEach((cell) => {
+  });
 })()
