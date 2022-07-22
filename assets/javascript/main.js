@@ -22,11 +22,11 @@ const board = () =>{
     undefined, undefined, undefined
   ];
 
-  const getBoardValue = (index) => board[index];
-  const setBoardValue = (index, value) => board[index] = value;
+  const getBoardValueIndex = (index) => board[index];
+  const setBoardValueIndex = (index, value) => board[index] = value;
   const getBoard = () => [...board];
 
-  return { getBoard, getBoardValue, setBoardValue };
+  return { getBoard, getBoardValueIndex, setBoardValueIndex };
 }
 
 // and finally, an IIFE. This is where you define your game logic. Here you define players, define a function that will define which player is
@@ -79,6 +79,16 @@ const board = () =>{
     }
   }
 
+  function updateBoard(evt,currentPlayer) {
+    const cellIndex = evt.target.getAttribute("data-index");
+    const playermarker = currentPlayer.getMarker();
+    gameBoard.setBoardValueIndex(cellIndex, playermarker);
+  }
+
+  function checkWinner(){
+
+  }
+
   //* change marker
   Array.from(markers).forEach(marker => {
     marker.addEventListener("click", (evt)=>{
@@ -96,9 +106,9 @@ const board = () =>{
 
       let currentPlayer = getCurrentPlayer();
 
+      updateBoard(evt,currentPlayer);
       renderCurrentMarker(currentPlayer);
       renderCellMarker(evt,currentPlayer);
     })
   })
-
 })()
