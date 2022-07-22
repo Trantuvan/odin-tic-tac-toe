@@ -1,15 +1,12 @@
 
 // player factory: Properties => name, marker
 // to define inside Player factory: getname, getMarker, setNamen, setMarker (return these 4)
-const player = (name, marker) =>{
-  const getName = () => playerName;
-  const getMarker = () => playerMarker;
-  const setName = (value) => value = name;
-  const setMarker = (value) => value = marker;
+const player = (marker) =>{
+  const getMarker = () => marker;
+  const setMarker = (value) => marker = value;
 
-  return {getName, getMarker, setName, setMarker};
+  return {getMarker, setMarker};
 }
-
 
 // another factory => store data inside of it
 // create the board. 9 fields of the board, what value?
@@ -39,13 +36,69 @@ const board = () =>{
 
 (() => {
   const gameBoard = board();
-  const player1 = player("test1", "X");
-  const player2 = player("test2", "O");
+  const player1 = player("X");
+  const player2 = player("O");
+  let player1Turns = true;
 
   //* cache dom
   const wrapper = document.querySelector(".wrapper");
-  const cells = wrapper.querySelectorAll("#game-board cell");
+  const markers = wrapper.querySelectorAll(".marker > img");
+  const currentMarker = wrapper.querySelector("#current-marker");
+  const cells = wrapper.querySelectorAll("#game-board > .cell");
 
-  Array.from(cells).forEach((cell) => {
+  function changeMarker(evt) {
+    const player1Marker = evt.target.getAttribute("data-marker");
+    const player2Marker = player1Marker === "X" ? "O" : "X";
+    player1.setMarker(player1Marker);
+    player2.setMarker(player2Marker);
+  }
+
+  function getCurrentPlayer() {
+    if (player1Turns) {
+      player1Turns = false;
+      return player1;
+    }
+    player1Turns = true;
+    return player2;
+  }
+
+  function renderCurrentMarker(currentPlayer) {
+    let playerMarker = currentPlayer.getMarker();
+    currentMarker.textContent = playerMarker;
+  }
+
+  function renderCellMarker(evt, currentPlayer) {
+    let playerMarker = currentPlayer.getMarker();
+
+    if(playerMarker === "X"){
+      evt.target.innerHTML = `<img src="./assets/img/x-marker.png" alt="x-marker">`;
+    }
+
+    if(playerMarker === "O"){
+      evt.target.innerHTML = `<img src="./assets/img/o-marker.png" alt="o-marker">`;
+    }
+  }
+
+  //* change marker
+  Array.from(markers).forEach(marker => {
+    marker.addEventListener("click", (evt)=>{
+      changeMarker(evt);
+    });
   });
+
+  //* playGame
+  Array.from(cells).forEach(cell => {
+    cell.addEventListener("click", (evt) => {
+      // prevent player click already taken spot
+      if(cell.hasChildNodes() === true) {
+        return;
+      }
+
+      let currentPlayer = getCurrentPlayer();
+
+      renderCurrentMarker(currentPlayer);
+      renderCellMarker(evt,currentPlayer);
+    })
+  })
+
 })()
