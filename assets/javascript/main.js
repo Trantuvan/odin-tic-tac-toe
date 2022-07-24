@@ -50,6 +50,9 @@ const board = () =>{
   const replayBtn = wrapper.querySelector(".action > .replay-btn");
   const currentMarker = wrapper.querySelector("#current-marker");
   const cells = wrapper.querySelectorAll("#game-board > .cell");
+  const modal = document.querySelector(".modal");
+  const modalInfo = modal.querySelector(".modal-info");
+  const modalReplayBtn = modal.querySelector(".modal-action > .btn");
 
   function changeMarker(evt) {
     const player1Marker = evt.target.getAttribute("data-marker");
@@ -69,7 +72,7 @@ const board = () =>{
 
   function renderMarkerStatus(currentPlayer) {
     let playerMarker = currentPlayer.getMarker();
-    currentMarker.textContent = playerMarker;
+    currentMarker.textContent = playerMarker === "X" ? "O" : "X";
   }
 
   function renderCellMarker(evt, currentPlayer, status) {
@@ -139,14 +142,27 @@ const board = () =>{
 
       if(isWin === true) {
         console.log(`player ${currentMarker} wins`);
-        return { currentPlayer, winStatus: isWin, winCase: winCase };
+        return { currentPlayer, winStatus: isWin, winCase: winCase, isTie: false };
       }
     }
 
     if (isWin === false && isPopulated === true) {
-      console.log("tie");
+      console.log("TIE");
+      return { currentPlayer, winStatus: isWin, winCase: null, isTie: true };
     }
-    return { currentPlayer, winStatus: isWin, winCase: null };
+    return { currentPlayer, winStatus: isWin, winCase: null, isTie: false};
+  }
+
+  function renderModal(status) {
+    if (status.winStatus === true) {
+      const currentMarker = status.currentPlayer.getMarker();
+      modal.classList.remove("deactivated");
+      modalInfo.textContent = `${currentMarker} TAKES THE ROUND`;
+    }
+    if (status.isTie === true) {
+      modal.classList.remove("deactivated");
+      modalInfo.textContent = "ALL TIES";
+    }
   }
 
   function resetGame() {
@@ -156,6 +172,10 @@ const board = () =>{
       cell.style.backgroundColor = "#e2e8f0";
     });
     gameBoard.setBoardDefault();
+
+    if(modal.classList.contains("deactivated") === false) {
+      modal.classList.add("deactivated");
+    }
   }
 
   //* change marker
@@ -167,6 +187,7 @@ const board = () =>{
 
   //* replay
   replayBtn.addEventListener("click", resetGame);
+  modalReplayBtn.addEventListener("click", resetGame);
 
   //* playGame
   Array.from(cells).forEach(cell => {
@@ -182,6 +203,7 @@ const board = () =>{
       const status = checkWinner(currentPlayer);
       renderMarkerStatus(currentPlayer);
       renderCellMarker(evt,currentPlayer, status);
+      renderModal(status);
     })
   })
 })()
