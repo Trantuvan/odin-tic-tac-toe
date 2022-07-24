@@ -16,17 +16,17 @@ const player = (marker) =>{
 // This way, your original board stays inside of your factory and in that way it's protected. You only ever work with the copy)
 // so inside of this one you return : getValueOfTheBoardAtIndex, setValueOfTheBoardAtIndex, getBoard (you probably want to name this better :D)
 const board = () =>{
-  const board = [
+  let board = [
     undefined, undefined, undefined,
     undefined, undefined, undefined,
     undefined, undefined, undefined
   ];
 
-  const getBoardValueIndex = (index) => board[index];
+  // const getBoardValueIndex = (index) => board[index];
   const setBoardValueIndex = (index, value) => board[index] = value;
   const getBoard = () => [...board];
 
-  return { getBoard, getBoardValueIndex, setBoardValueIndex };
+  return { getBoard, setBoardValueIndex };
 }
 
 // and finally, an IIFE. This is where you define your game logic. Here you define players, define a function that will define which player is
@@ -85,8 +85,42 @@ const board = () =>{
     gameBoard.setBoardValueIndex(cellIndex, playermarker);
   }
 
-  function checkWinner(){
+  function checkWinner(currentPlayer) {
+    const currentBoard = gameBoard.getBoard();
+    const currentMarker = currentPlayer.getMarker();
+    const isPopulated = currentBoard.every((cell) => cell !== undefined);
+    let isWinner = false;
 
+    const winCases = [
+      [0, 1, 2],
+      [3, 4, 5],
+      [6, 7, 8],
+
+      [0, 3, 6],
+      [1, 4, 7],
+      [2, 5, 8],
+
+      [0, 4, 8],
+      [2, 4, 6]
+    ];
+
+    for (const winCase of winCases) {
+      let winCaseWithMarker = winCase.map(
+        cellIndex => currentBoard[cellIndex]
+        );
+
+      isWinner = winCaseWithMarker.every(marker => marker === currentMarker);
+
+      if(isWinner === true) {
+        console.log(`player ${currentMarker} wins`);
+        return `player ${currentMarker} wins`;
+      }
+    }
+
+    if (isWinner === false && isPopulated === true) {
+      console.log("tie");
+      return "TIE";
+    }
   }
 
   //* change marker
@@ -107,6 +141,7 @@ const board = () =>{
       let currentPlayer = getCurrentPlayer();
 
       updateBoard(evt,currentPlayer);
+      checkWinner(currentPlayer);
       renderCurrentMarker(currentPlayer);
       renderCellMarker(evt,currentPlayer);
     })
