@@ -22,7 +22,6 @@ const board = () =>{
     undefined, undefined, undefined
   ];
 
-  // const getBoardValueIndex = (index) => board[index];
   const setBoardValueIndex = (index, value) => board[index] = value;
   const getBoard = () => [...board];
 
@@ -62,12 +61,12 @@ const board = () =>{
     return player2;
   }
 
-  function renderCurrentMarker(currentPlayer) {
+  function renderMarkerStatus(currentPlayer) {
     let playerMarker = currentPlayer.getMarker();
     currentMarker.textContent = playerMarker;
   }
 
-  function renderCellMarker(evt, currentPlayer) {
+  function renderCellMarker(evt, currentPlayer, status) {
     let playerMarker = currentPlayer.getMarker();
 
     if(playerMarker === "X"){
@@ -76,6 +75,27 @@ const board = () =>{
 
     if(playerMarker === "O"){
       evt.target.innerHTML = `<img src="./assets/img/o-marker.png" alt="o-marker">`;
+    }
+
+    if (status.winStatus === true) {
+      const winCells = status.winCase;
+      const cellsArray = Array.from(cells);
+
+      switch (playerMarker) {
+        case "X":
+          winCells.forEach(
+            (cellIndex) =>
+              (cellsArray[cellIndex].style.backgroundColor = "#22c55e")
+          );
+          break;
+
+        case "O":
+          winCells.forEach(
+            (cellIndex) =>
+              (cellsArray[cellIndex].style.backgroundColor = "#f43f5e")
+          );
+          break;
+      }
     }
   }
 
@@ -89,7 +109,7 @@ const board = () =>{
     const currentBoard = gameBoard.getBoard();
     const currentMarker = currentPlayer.getMarker();
     const isPopulated = currentBoard.every((cell) => cell !== undefined);
-    let isWinner = false;
+    let isWin = false;
 
     const winCases = [
       [0, 1, 2],
@@ -109,18 +129,18 @@ const board = () =>{
         cellIndex => currentBoard[cellIndex]
         );
 
-      isWinner = winCaseWithMarker.every(marker => marker === currentMarker);
+      isWin = winCaseWithMarker.every(marker => marker === currentMarker);
 
-      if(isWinner === true) {
+      if(isWin === true) {
         console.log(`player ${currentMarker} wins`);
-        return `player ${currentMarker} wins`;
+        return { currentPlayer, winStatus: isWin, winCase: winCase };
       }
     }
 
-    if (isWinner === false && isPopulated === true) {
+    if (isWin === false && isPopulated === true) {
       console.log("tie");
-      return "TIE";
     }
+    return { currentPlayer, winStatus: isWin, winCase: null };
   }
 
   //* change marker
@@ -141,9 +161,9 @@ const board = () =>{
       let currentPlayer = getCurrentPlayer();
 
       updateBoard(evt,currentPlayer);
-      checkWinner(currentPlayer);
-      renderCurrentMarker(currentPlayer);
-      renderCellMarker(evt,currentPlayer);
+      const status = checkWinner(currentPlayer);
+      renderMarkerStatus(currentPlayer);
+      renderCellMarker(evt,currentPlayer, status);
     })
   })
 })()
