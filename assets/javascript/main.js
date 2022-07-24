@@ -24,8 +24,13 @@ const board = () =>{
 
   const setBoardValueIndex = (index, value) => board[index] = value;
   const getBoard = () => [...board];
+  const setBoardDefault = () => board = [
+    undefined, undefined, undefined,
+    undefined, undefined, undefined,
+    undefined, undefined, undefined
+  ];
 
-  return { getBoard, setBoardValueIndex };
+  return { getBoard, setBoardValueIndex, setBoardDefault };
 }
 
 // and finally, an IIFE. This is where you define your game logic. Here you define players, define a function that will define which player is
@@ -42,6 +47,7 @@ const board = () =>{
   //* cache dom
   const wrapper = document.querySelector(".wrapper");
   const markers = wrapper.querySelectorAll(".marker > img");
+  const replayBtn = wrapper.querySelector(".action > .replay-btn");
   const currentMarker = wrapper.querySelector("#current-marker");
   const cells = wrapper.querySelectorAll("#game-board > .cell");
 
@@ -143,12 +149,24 @@ const board = () =>{
     return { currentPlayer, winStatus: isWin, winCase: null };
   }
 
+  function resetGame() {
+    const cellArray = Array.from(cells);
+    cellArray.forEach(cell => {
+      cell.innerHTML = "";
+      cell.style.backgroundColor = "#e2e8f0";
+    });
+    gameBoard.setBoardDefault();
+  }
+
   //* change marker
   Array.from(markers).forEach(marker => {
     marker.addEventListener("click", (evt)=>{
       changeMarker(evt);
     });
   });
+
+  //* replay
+  replayBtn.addEventListener("click", resetGame);
 
   //* playGame
   Array.from(cells).forEach(cell => {
