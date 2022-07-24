@@ -54,7 +54,7 @@ img{
   grid-template-areas:
                       "action"
                       "board"
-                      "score";
+                      "option";
 }
 
 .action{
@@ -119,47 +119,35 @@ img{
   width: min(10rem, 100%);
 }
 
-.score-board{
-  padding: .8rem 1.5rem;
-  grid-area: score;
+.option-opponent{
+  padding: 0 1.5rem;
+  grid-area: option;
   display: flex;
   gap: 2em;
   justify-content: space-around;
   align-items: center;
 }
 
-.left-score,
-.center-score,
-.right-score{
+.left-opponent,
+.right-opponent{
   flex: 1;
-  min-height: 80%;
-  background-color:white;
+  min-height: 60%;
   font-size: 1.5rem;
   border-radius: 6px;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-}
-
-.score--header{
-  font-weight: 400;
-}
-
-.score--text{
-  font-size: 2rem;
+  color: var(--slate-200);
   font-weight: 700;
+  cursor: pointer;
 }
 
-.left-score{
+.left-opponent{
   background-color: var(--emerald-500);
 }
 
-.center-score{
-  background-color: var(--slate-200);
-}
-
-.right-score{
+.right-opponent{
   background-color: var(--rose-500);
 }
 
