@@ -219,6 +219,7 @@ const board = () =>{
 
     player1.setMarker("X");
     player2.setMarker("O");
+    cpuPlayer = undefined;
     player1Turns = true;
     currentMarker.textContent = "X";
   }
