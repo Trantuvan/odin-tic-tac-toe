@@ -36,7 +36,7 @@ const board = () =>{
   const replayBtn = wrapper.querySelector(".action > .replay-btn");
   const currentMarker = wrapper.querySelector("#current-marker");
   const cells = wrapper.querySelectorAll("#game-board > .cell");
-  const cpuBtn = wrapper.querySelector(".right-opponent");
+  const cpuOption = wrapper.querySelector("#players");
   const modal = document.querySelector(".modal");
   const modalInfo = modal.querySelector(".modal-info");
   const modalReplayBtn = modal.querySelector(".modal-action > .btn");
@@ -181,13 +181,11 @@ const board = () =>{
       isWin = winCaseWithMarker.every(marker => marker === currentMarker);
 
       if(isWin === true) {
-        console.log(`player ${currentMarker} wins`);
         return { currentPlayer, winStatus: isWin, winCase: winCase, isTie: false };
       }
     }
 
     if (isWin === false && isPopulated === true) {
-      console.log("TIE");
       return { currentPlayer, winStatus: isWin, winCase: null, isTie: true };
     }
     return { currentPlayer, winStatus: isWin, winCase: null, isTie: false};
@@ -225,7 +223,12 @@ const board = () =>{
   }
 
   //* cpu Player
-  cpuBtn.addEventListener("click", () => cpuPlayer = player("O"));
+  // cpuOption.addEventListener("click", () => cpuPlayer = player("O"));
+  cpuOption.addEventListener("change", (evt) => {
+    if(evt.target.value === "cpu"){
+      cpuPlayer = player("O");
+    }
+  });
 
   //* change marker
   Array.from(markers).forEach(marker => {
