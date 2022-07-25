@@ -50,11 +50,11 @@ img{
   width: min(50rem,100%);
   display: grid;
   gap: 1rem;
-  grid-template-rows: 1fr 8fr 2fr;
+  grid-template-rows: .6fr 1fr 8fr;
   grid-template-areas:
+                      "mode"
                       "action"
-                      "board"
-                      "option";
+                      "board";
 }
 
 .action{
@@ -119,36 +119,65 @@ img{
   width: min(10rem, 100%);
 }
 
-.option-opponent{
+.mode{
   padding: 0 1.5rem;
-  grid-area: option;
+  grid-area: mode;
   display: flex;
-  gap: 2em;
-  justify-content: space-around;
-  align-items: center;
-}
-
-.left-opponent,
-.right-opponent{
-  flex: 1;
-  min-height: 60%;
-  font-size: 1.5rem;
-  border-radius: 6px;
-  display: flex;
-  flex-direction: column;
   justify-content: center;
   align-items: center;
+  position: relative;
+}
+
+#players{
   color: var(--slate-200);
   font-weight: 700;
-  cursor: pointer;
+  border: 0;
+  font-size: 1.6rem;
+  flex-basis: 100%;
+  padding: .5em 4em .5em .5em;
+  background-color: var(--emerald-700);
+  box-shadow: 1px 4px 7px 0px rgb(0 0 0 / 40%);
+  border-radius: 8px;
 }
 
-.left-opponent{
-  background-color: var(--emerald-500);
+.custom-arrow{
+  position: absolute;
+  top: 0;
+  right: 1.4rem;
+  display: block;
+  background-color: var(--emerald-800);
+  height: 100%;
+  width: 4em;
+  pointer-events: none;
+  border-top-right-radius: 8px;
+  border-bottom-right-radius: 8px;
 }
 
-.right-opponent{
-  background-color: var(--rose-500);
+.custom-arrow::before,
+.custom-arrow::after{
+  --size: .65em;
+  content: "";
+  position: absolute;
+  height: 0;
+  width: 0;
+
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.custom-arrow::before{
+  border-left: var(--size) solid transparent;
+  border-right: var(--size) solid transparent;
+  border-bottom: var(--size) solid var(--slate-200);
+  top: 35%;
+}
+
+.custom-arrow::after{
+  border-left: var(--size) solid transparent;
+  border-right: var(--size) solid transparent;
+  border-top: var(--size) solid var(--slate-200);
+  top: 65%;
 }
 
 /*******************
