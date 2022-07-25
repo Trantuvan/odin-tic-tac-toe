@@ -219,6 +219,8 @@ const board = () =>{
     player2.setMarker("O");
     cpuPlayer = undefined;
     player1Turns = true;
+    //* reset Select option
+    cpuOption.selectedIndex = 0;
     currentMarker.textContent = "X";
   }
 
@@ -258,6 +260,7 @@ const board = () =>{
       renderModal(status);
 
       if(cpuPlayer !== undefined) {
+        evt.preventDefault();
         currentPlayer = getCurrentPlayer();
         const cpuIndex = updateBoardByCpu(currentPlayer);
         const status = checkWinner(currentPlayer);
